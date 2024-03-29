@@ -1,22 +1,21 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
+import { FETCH_DATA_INIT_STATE, FetchDataActionType, fetchDataReducer } from './fetchDataReducer';
 
 const useFetch = ({ url }) => {
-  const [data, setData] = useState(null);
-  const [isPending, setIsPending] = useState(true);
-  const [error, setError] = useState(null);
+  const [state, dispatch] = useReducer(fetchDataReducer, FETCH_DATA_INIT_STATE);
 
   const fetchData = async (url) => {
     try {
+      dispatch({ type: FetchDataActionType.FETCH_START });
       const res = await axios.get(url);
       if (res.status >= 400) {
         throw Error('Could not fetch blogs data');
       }
-      setData(res.data);
-      setIsPending(false);
+      const data = res.data;
+      dispatch({ type: FetchDataActionType.FETCH_SUCCESS, payload: { data } });
     } catch (error) {
-      setError(error.message);
-      setIsPending(false);
+      dispatch({ type: FetchDataActionType.FETCH_ERROR, payload: { error } });
     }
   };
 
@@ -24,7 +23,7 @@ const useFetch = ({ url }) => {
     fetchData(url);
   }, [url]);
 
-  return { data, isPending, error };
+  return state;
 };
 
 export default useFetch;

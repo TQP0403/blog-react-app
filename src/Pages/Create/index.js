@@ -6,7 +6,7 @@ const Create = () => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [author, setAuthor] = useState('Mario');
-  const [isPending, setIsPending] = useState(false);
+  const [loading, setloading] = useState(false);
   const [error, setError] = useState(null);
   const history = useHistory();
 
@@ -16,19 +16,19 @@ const Create = () => {
       if (res.status >= 400) {
         throw Error('Could not create blog');
       }
-      setIsPending(false);
+      setloading(false);
       history.push('/');
     } catch (error) {
       console.log({ error });
       setError(error.message);
-      setIsPending(false);
+      setloading(false);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const blog = { title, body, author };
-    setIsPending(true);
+    setloading(true);
     createBlog(blog);
   };
 
@@ -46,7 +46,7 @@ const Create = () => {
           <option value="Mario">Mario</option>
           <option value="Yoshi">Yoshi</option>
         </select>
-        <button disabled={isPending}>Create blog</button>
+        <button disabled={loading}>Create blog</button>
       </form>
     </div>
   );

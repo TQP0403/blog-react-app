@@ -8,7 +8,7 @@ const BlogDetails = () => {
 
   const { id } = useParams();
 
-  const { data: blog, isPending, error } = useFetch({ url: `http://localhost:3001/blogs/${id}` });
+  const { data: blog, loading, error } = useFetch({ url: `http://localhost:3001/blogs/${id}` });
 
   const handleDelete = async () => {
     try {
@@ -24,7 +24,7 @@ const BlogDetails = () => {
 
   return (
     <div className="blog-details">
-      {isPending && <div className="loading">Loading ...</div>}
+      {loading && <div className="loading">Loading ...</div>}
       {error && <div className="error">{error}</div>}
       {blog && (
         <article>
