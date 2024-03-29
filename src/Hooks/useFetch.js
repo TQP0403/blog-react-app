@@ -8,14 +8,21 @@ const useFetch = ({ url }) => {
   const fetchData = async (url) => {
     try {
       dispatch({ type: FetchDataActionType.FETCH_START });
+
       const res = await axios.get(url);
       if (res.status >= 400) {
         throw Error('Could not fetch blogs data');
       }
-      const data = res.data;
-      dispatch({ type: FetchDataActionType.FETCH_SUCCESS, payload: { data } });
+
+      dispatch({
+        type: FetchDataActionType.FETCH_SUCCESS,
+        payload: { data: res.data }
+      });
     } catch (error) {
-      dispatch({ type: FetchDataActionType.FETCH_ERROR, payload: { error } });
+      dispatch({
+        type: FetchDataActionType.FETCH_ERROR,
+        payload: { error: error.message }
+      });
     }
   };
 

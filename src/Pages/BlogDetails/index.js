@@ -8,11 +8,13 @@ const BlogDetails = () => {
 
   const { id } = useParams();
 
-  const { data: blog, loading, error } = useFetch({ url: `http://localhost:3001/blogs/${id}` });
+  const url = `http://localhost:3001/blogs/${id}`;
+
+  const { data: blog, loading, error } = useFetch({ url });
 
   const handleDelete = async () => {
     try {
-      const res = await axios.delete('http://localhost:3001/blogs/' + blog.id);
+      const res = await axios.delete(url);
       if (res.status >= 400) {
         throw new Error('delete failed');
       }
